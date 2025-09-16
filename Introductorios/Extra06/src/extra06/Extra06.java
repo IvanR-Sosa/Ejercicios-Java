@@ -36,7 +36,7 @@ encuentran por debajo de 1.60 mts. y el promedio de estaturas en general.
         Scanner scanner = new Scanner (System.in);
         ArrayList <Double> height = new ArrayList<>();
         for (int i = 0; i < number; i++) {
-            System.out.println("Ingrese estatura de la persona");//asumiremos que el usuario ingresa una estatura valida despues se puedemodificar esta parte
+            System.out.println("Ingrese estatura de la persona");//asumiremos que el usuario ingresa una estatura valida despues se puede modificar esta parte
             Double aux = scanner.nextDouble();
             height.add(aux);
         }
