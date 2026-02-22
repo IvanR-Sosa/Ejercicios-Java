@@ -1,0 +1,546 @@
+┌─────────────────────────────────────────────────────────────────┐
+│                        CLIENTE (Frontend)                        │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                   │
+│  ┌──────────────────────────────────────────────────────────┐  │
+│  │                    React Application                      │  │
+│  │                                                            │  │
+│  │  • Componentes (UI)                                       │  │
+│  │  • React Router (navegación)                              │  │
+│  │  • State Management (Redux/Context API/Zustand)          │  │
+│  │  • Axios/Fetch (HTTP Client)                             │  │
+│  │  • CSS/Tailwind/Material-UI (estilos)                    │  │
+│  └──────────────────────────────────────────────────────────┘  │
+│                              │                                   │
+│                              │ HTTP/HTTPS                        │
+│                              │ (REST API calls)                  │
+└──────────────────────────────┼───────────────────────────────────┘
+                               │
+                               ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                      SERVIDOR (Backend)                          │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                   │
+│  ┌──────────────────────────────────────────────────────────┐  │
+│  │                  Spring Boot Application                  │  │
+│  │                                                            │  │
+│  │  ┌────────────────────────────────────────────────────┐  │  │
+│  │  │         Controller Layer (REST APIs)               │  │  │
+│  │  │  • @RestController                                 │  │  │
+│  │  │  • Endpoints (@GetMapping, @PostMapping, etc.)     │  │  │
+│  │  └────────────────────────────────────────────────────┘  │  │
+│  │                          ▼                                 │  │
+│  │  ┌────────────────────────────────────────────────────┐  │  │
+│  │  │            Service Layer (Lógica de negocio)       │  │  │
+│  │  │  • @Service                                        │  │  │
+│  │  │  • Validaciones y reglas de negocio               │  │  │
+│  │  └────────────────────────────────────────────────────┘  │  │
+│  │                          ▼                                 │  │
+│  │  ┌────────────────────────────────────────────────────┐  │  │
+│  │  │       Repository Layer (Acceso a datos)            │  │  │
+│  │  │  • @Repository / JPA Repository                    │  │  │
+│  │  │  • Spring Data JPA                                 │  │  │
+│  │  └────────────────────────────────────────────────────┘  │  │
+│  │                          ▼                                 │  │
+│  │  ┌────────────────────────────────────────────────────┐  │  │
+│  │  │            Model/Entity Layer                      │  │  │
+│  │  │  • @Entity                                         │  │  │
+│  │  │  • Clases de dominio                              │  │  │
+│  │  └────────────────────────────────────────────────────┘  │  │
+│  │                                                            │  │
+│  │  Dependencias adicionales:                                │  │
+│  │  • Spring Security (autenticación/autorización)          │  │
+│  │  • Spring Validation                                      │  │
+│  │  • Lombok (reducir boilerplate)                          │  │
+│  └──────────────────────────────────────────────────────────┘  │
+│                              │                                   │
+│                              │ JDBC/JPA                          │
+│                              ▼                                   │
+└─────────────────────────────────────────────────────────────────┘
+                               │
+                               ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                      BASE DE DATOS                               │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                   │
+│  • MySQL / PostgreSQL / MongoDB / H2                            │
+│  • Tablas/Colecciones                                           │
+│  • Relaciones y constraints                                     │
+│                                                                   │
+└─────────────────────────────────────────────────────────────────┘
+
+ESTRUCTURA TIPICA DE CARPETAS
+
+proyecto-fullstack/
+├── frontend/                    # Aplicación React
+│   ├── public/
+│   ├── src/
+│   │   ├── components/         # Componentes reutilizables
+│   │   ├── pages/              # Páginas/vistas
+│   │   ├── services/           # Llamadas API
+│   │   ├── hooks/              # Custom hooks
+│   │   ├── context/            # Context API
+│   │   ├── utils/              # Utilidades
+│   │   └── App.js
+│   └── package.json
+│
+└── backend/                     # Aplicación Spring Boot
+    ├── src/
+    │   ├── main/
+    │   │   ├── java/com/ejemplo/
+    │   │   │   ├── controller/
+    │   │   │   ├── service/
+    │   │   │   ├── repository/
+    │   │   │   ├── model/
+    │   │   │   ├── dto/
+    │   │   │   ├── config/
+    │   │   │   └── Application.java
+    │   │   └── resources/
+    │   │       ├── application.properties
+    │   │       └── application.yml
+    │   └── test/
+    └── pom.xml / build.gradle
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+ PARTE 1: CREAR EL BACKEND (Spring Boot)
+Paso 1: Generar el proyecto Spring Boot
+Ve a https://start.spring.io/
+
+Configura así:
+
+Project: Maven
+Language: Java
+Spring Boot: 3.2.x (última estable)
+Group: com.ejemplo
+Artifact: backend
+Name: backend
+Package name: com.ejemplo.backend
+Packaging: Jar
+Java: 17
+Dependencias a agregar (clic en "ADD DEPENDENCIES"):
+-----------------------------------------------------------
+|Spring Web						  |
+|Spring Data JPA					  |
+|H2 Database (para empezar, luego puedes cambiar a MySQL) |
+|Lombok                                                   |
+|Spring Boot DevTools					  |
+|Validation					 	  |
+|Clic en "GENERATE" y descarga el ZIP			  |
+|							  |
+|Descomprime y abre la carpeta en IntelliJ IDEA		  |
+|							  |
+-----------------------------------------------------------
+
+
+Paso 2: Configurar application.properties
+Abre src/main/resources/application.properties y agrega:
+---------------------------------------------------------------------------------------------------------------------------------------------
+# Puerto del servidor
+server.port=8080
+
+# Configuración de H2 Database (base de datos en memoria para desarrollo)
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+
+# Configuración JPA
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+
+# Consola H2 (para ver la base de datos en el navegador)
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
+
+# CORS (permitir peticiones desde React)
+spring.web.cors.allowed-origins=http://localhost:3000
+spring.web.cors.allowed-methods=GET,POST,PUT,DELETE,OPTIONS
+spring.web.cors.allowed-headers=*
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+Paso 3: Crear la estructura del proyecto
+Crea estos paquetes dentro de src/main/java/com/ejemplo/backend/:
+
+backend/
+└── src/main/java/com/ejemplo/backend/
+    ├── controller/
+    ├── service/
+    ├── repository/
+    ├── model/
+    ├── dto/
+    └── config/
+------------------------------------------------------------------------------------------------------------------------------------------------
+Paso 4: Crear un ejemplo completo (Sistema de Tareas)
+4.1 Crear la entidad (model/Tarea.java)
+
+package com.ejemplo.backend.model;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "tareas")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Tarea {
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    @Column(nullable = false)
+    private String titulo;
+    
+    @Column(length = 500)
+    private String descripcion;
+    
+    @Column(nullable = false)
+    private Boolean completada = false;
+    
+    @Column(name = "fecha_creacion")
+    private LocalDateTime fechaCreacion;
+    
+    @PrePersist
+    protected void onCreate() {
+        fechaCreacion = LocalDateTime.now();
+    }
+}
+-----------------------------------------------------------------------------------------------------------------------------------------
+4.2 Crear el Repository (repository/TareaRepository.java)
+
+package com.ejemplo.backend.repository;
+
+import com.ejemplo.backend.model.Tarea;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import java.util.List;
+
+@Repository
+public interface TareaRepository extends JpaRepository<Tarea, Long> {
+    List<Tarea> findByCompletada(Boolean completada);
+}
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+4.3 Crear el Service (service/TareaService.java)
+
+package com.ejemplo.backend.service;
+
+import com.ejemplo.backend.model.Tarea;
+import com.ejemplo.backend.repository.TareaRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
+public class TareaService {
+    
+    private final TareaRepository tareaRepository;
+    
+    public List<Tarea> obtenerTodasLasTareas() {
+        return tareaRepository.findAll();
+    }
+    
+    public Optional<Tarea> obtenerTareaPorId(Long id) {
+        return tareaRepository.findById(id);
+    }
+    
+    public Tarea crearTarea(Tarea tarea) {
+        return tareaRepository.save(tarea);
+    }
+    
+    public Tarea actualizarTarea(Long id, Tarea tareaActualizada) {
+        return tareaRepository.findById(id)
+            .map(tarea -> {
+                tarea.setTitulo(tareaActualizada.getTitulo());
+                tarea.setDescripcion(tareaActualizada.getDescripcion());
+                tarea.setCompletada(tareaActualizada.getCompletada());
+                return tareaRepository.save(tarea);
+            })
+            .orElseThrow(() -> new RuntimeException("Tarea no encontrada"));
+    }
+    
+    public void eliminarTarea(Long id) {
+        tareaRepository.deleteById(id);
+    }
+    
+    public List<Tarea> obtenerTareasPorEstado(Boolean completada) {
+        return tareaRepository.findByCompletada(completada);
+    }
+}
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+4.4 Configurar CORS (config/CorsConfig.java)
+
+package com.ejemplo.backend.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
+@Configuration
+public class CorsConfig {
+    
+    @Bean
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.addAllowedOrigin("http://localhost:3000");
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
+    }
+}
+-------------------------------------------------------------------------------------------------------------------------------------
+4.5 Crear el Controller (controller/TareaController.java)
+package com.ejemplo.backend.controller;
+
+import com.ejemplo.backend.model.Tarea;
+import com.ejemplo.backend.service.TareaService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/tareas")
+@RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
+public class TareaController {
+    
+    private final TareaService tareaService;
+    
+    @GetMapping
+    public ResponseEntity<List<Tarea>> obtenerTodasLasTareas() {
+        return ResponseEntity.ok(tareaService.obtenerTodasLasTareas());
+    }
+    
+    @GetMapping("/{id}")
+    public ResponseEntity<Tarea> obtenerTareaPorId(@PathVariable Long id) {
+        return tareaService.obtenerTareaPorId(id)
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.notFound().build());
+    }
+    
+    @PostMapping
+    public ResponseEntity<Tarea> crearTarea(@RequestBody Tarea tarea) {
+        Tarea nuevaTarea = tareaService.crearTarea(tarea);
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevaTarea);
+    }
+    
+    @PutMapping("/{id}")
+    public ResponseEntity<Tarea> actualizarTarea(
+            @PathVariable Long id, 
+            @RequestBody Tarea tarea) {
+        try {
+            Tarea tareaActualizada = tareaService.actualizarTarea(id, tarea);
+            return ResponseEntity.ok(tareaActualizada);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminarTarea(@PathVariable Long id) {
+        tareaService.eliminarTarea(id);
+        return ResponseEntity.noContent().build();
+    }
+    
+    @GetMapping("/completadas/{completada}")
+    public ResponseEntity<List<Tarea>> obtenerTareasPorEstado(
+            @PathVariable Boolean completada) {
+        return ResponseEntity.ok(tareaService.obtenerTareasPorEstado(completada));
+    }
+}
+------------------------------------------------------------------------------------------------------------------------------------
+Paso 5: Ejecutar el Backend
+En IntelliJ, busca la clase BackendApplication.java
+Haz clic derecho → "Run 'BackendApplication'"
+Deberías ver en la consola: Started BackendApplication in X seconds
+El backend estará corriendo en: http://localhost:8080
+Paso 6: Probar el Backend con Postman
+Crear una tarea (POST):
+
+URL: http://localhost:8080/api/tareas
+Method: POST
+Body (raw JSON):
+
+{
+    "titulo": "Mi primera tarea",
+    "descripcion": "Aprender Spring Boot",
+    "completada": false
+}
+
+
+
+--Obtener todas las tareas (GET):
+
+URL: http://localhost:8080/api/tareas
+Method: GET
+----------------------------------------------------------------------------------------------------------------------------------------------------
+🎨 PARTE 2: CREAR EL FRONTEND (React)
+Paso 1: Crear el proyecto React
+Abre una terminal y ejecuta:
+
+npx create-react-app frontend
+cd frontend
+
+****************************************************************************************************************************************
+Paso 2: Instalar dependencias necesarias
+npm install axios
+npm install react-router-dom
+********************************************************************************************************************************
+Paso 3: Crear la estructura de carpetas
+Dentro de src/, crea estas carpetas:
+frontend/src/
+├── components/
+├── services/
+├── pages/
+└── App.js
+********************************************************************************************************************************
+Paso 4: Crear el servicio API (services/tareaService.js)
+import axios from 'axios';
+
+const API_URL = 'http://localhost:8080/api/tareas';
+
+class TareaService {
+    
+    obtenerTodasLasTareas() {
+        return axios.get(API_URL);
+    }
+    
+    obtenerTareaPorId(id) {
+        return axios.get(`${API_URL}/${id}`);
+    }
+    
+    crearTarea(tarea) {
+        return axios.post(API_URL, tarea);
+    }
+    
+    actualizarTarea(id, tarea) {
+        return axios.put(`${API_URL}/${id}`, tarea);
+    }
+    
+    eliminarTarea(id) {
+        return axios.delete(`${API_URL}/${id}`);
+    }
+}
+
+export default new TareaService();
+
+********************************************************************************************************************************
+Paso 5: Crear componente de lista de tareas (components/ListaTareas.js)
+
+import React, { useState, useEffect } from 'react';
+import tareaService from '../services/tareaService';
+import './ListaTareas.css';
+
+function ListaTareas() {
+    const [tareas, setTareas] = useState([]);
+    const [nuevaTarea, setNuevaTarea] = useState({
+        titulo: '',
+        descripcion: '',
+        completada: false
+    });
+    const [editando, setEditando] = useState(null);
+
+    useEffect(() => {
+        cargarTareas();
+    }, []);
+
+    const cargarTareas = async () => {
+        try {
+            const response = await tareaService.obtenerTodasLasTareas();
+            setTareas(response.data);
+        } catch (error) {
+            console.error('Error al cargar tareas:', error);
+        }
+    };
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setNuevaTarea({
+            ...nuevaTarea,
+            [name]: value
+        });
+    };
+
+    const crearTarea = async (e) => {
+        e.preventDefault();
+        if (!nuevaTarea.titulo.trim()) {
+            alert('El título es obligatorio');
+            return;
+        }
+        
+        try {
+            await tareaService.crearTarea(nuevaTarea);
+            setNuevaTarea({ titulo: '', descripcion: '', completada: false });
+            cargarTareas();
+        } catch (error) {
+            console.error('Error al crear tarea:', error);
+        }
+    };
+
+    const eliminarTarea = async (id) => {
+        if (window.confirm('¿Estás seguro de eliminar esta tarea?')) {
+            try {
+                await tareaService.eliminarTarea(id);
+                cargarTareas();
+            } catch (error) {
+                console.error('Error al eliminar tarea:', error);
+            }
+        }
+    };
+
+    const toggleCompletada = async (tarea) => {
+        try {
+            const tareaActualizada = {
+                ...tarea,
+                completada: !tarea.completada
+            };
+            await tareaService.actualizarTarea(tarea.id, tareaActualizada);
+            cargarTareas();
+        } catch (error) {
+            console.error('Error al actualizar tarea:', error);
+        }
+    };
+
+    return (
+        <div className="container">
+            <h1>📝 Gestor de Tareas</h1>
+            
+            {/* Formulario para crear tarea */}
+            <div className="form-container">
+                <h2>Nueva Tarea</h2>
+                <form onSubmit={crearTarea}>
+                    <input
+                        type="text"
+                        name="titulo"
+                        placeholder="Título de la tarea"
+                        value={nuevaTarea.titulo}
+                        onChange={handleInputChange}
+                        className="input-field"
+                    />
+                    <textarea
+                        name="descripcion"
+                        placeholder="Descripción (opcional)"
+                        value={nuevaTarea.descripcion}
+                        onChange={handleInputChange}
+                        className="input-field"
+                        rows="3"
+                    />
+                    <button type="submit" className="btn btn-primary">
+                        Agregar
+
+********************************************************************************************************************************
