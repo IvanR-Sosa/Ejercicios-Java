@@ -1,0 +1,15 @@
+
+Almacena en un HashMap 10 ciudades con sus IDs (1 a 10).
+Ejemplo: 1 → Madrid, 2 → Barcelona, etc.
+
+Pide al usuario que ingrese 5 IDs y sus ciudades (simulando la entrada, o puedes cargarlos directamente).
+
+Muestra por pantalla los datos introducidos.
+
+Pide un ID y muestra la ciudad asociada si existe; si no, avisa al usuario.
+
+Muestra por pantalla los datos actualizados.
+
+Elimina 1 ciudad existente (que el usuario indique por ID).
+
+Muestra por pantalla los datos finales.
