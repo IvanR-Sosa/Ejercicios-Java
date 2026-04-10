@@ -1,0 +1,108 @@
+¡Aclaracion : esta es una guia que solicite a una IA para el desarrollo del ejercicio basado en como yo lo entendi
+me sirvio para dar mayor claridad a mis ideas pero el codigo realizado en si es hecho por mi Tu puedes ayudarte de amigos
+profesores u otra persona o IA como desees en mi caso al no tener nadie en mi circulo cercano use esta herramienta !
+
+Guía de Desarrollo - Simulador de Votación Egg
+📁 Estructura del Proyecto
+src/
+├── model/
+│   ├── Alumno.java
+│   ├── Voto.java
+│   └── Facilitador.java
+├── interfaces/
+│   └── ISimulador.java
+└── service/
+    └── SimuladorService.java
+    └── Main.java
+🧱 Capa Model
+Alumno.java
+    Atributos:
+
+        String nombreCompleto
+        String dni
+        int cantidadVotos
+            Incluir: Constructor, getters/setters y toString()
+
+Voto.java
+    Atributos:
+
+        Alumno alumnoQueVota
+        List<Alumno> alumnosVotados (lista de 3 alumnos)
+            Incluir: Constructor, getters/setters y toString()
+
+Facilitador.java
+    Atributos:
+
+        Alumno alumno
+        boolean esSuplente
+            Incluir: Constructor, getters/setters y toString()
+
+🔌 Capa Interface
+ISimulador.java
+Declarar las firmas de los siguientes métodos:
+
+Método	                                                                               Retorna                                        Descripción
+generarNombres()---------------------------------------------List<String>	---------------------Lista de nombres aleatorios
+generarDnis()-------------------------------------------------List<String>	---------------------Lista de DNIs en rango real
+generarAlumnos(List<String> nombres, List<String> dnis, int cantidad)----	List<Alumno>---------	-----------Crea objetos Alumno sin DNI repetido
+mostrarAlumnos(List<Alumno> alumnos)---------------------------	void	---------------------Imprime el listado
+simularVotacion(List<Alumno> alumnos)---------------------------	List<Voto>	---------------------Genera 3 votos por alumno
+mostrarVotos(List<Voto> votos)----------------------------------	void	---------------------Muestra quién votó a quién
+recuentoDeVotos(List<Alumno> alumnos)---------------------------	List<Alumno>--------------------Ordena alumnos por votos recibidos
+asignarFacilitadores(List<Alumno> ranking)-------------------------	void	---------------------Asigna titulares y suplentes
+⚙️ 
+
+Capa Service
+SimuladorService.java (implementa ISimulador)
+Paso 1 — generarNombres()
+Paso 2 — generarDnis()
+Paso 3 — generarAlumnos(...)
+Paso 4 — mostrarAlumnos(...)
+Paso 5 — simularVotacion(...)
+Paso 6 — mostrarVotos(...)
+Mostrar el alumno que votó y los 3 alumnos a los que votó
+Paso 7 — recuentoDeVotos(...)
+Paso 8 — asignarFacilitadores(...)
+
+🚀 Main
+El flujo de llamadas debe ser:
+
+Llamar generarNombres() → guardar lista
+Llamar generarDnis() → guardar lista
+Pedir al usuario la cantidad de alumnos a generar
+Llamar generarAlumnos(...) → guardar lista
+Llamar mostrarAlumnos(...)
+Llamar simularVotacion(...) → guardar lista de votos
+Llamar mostrarVotos(...)
+Llamar recuentoDeVotos(...) → guardar ranking
+Llamar asignarFacilitadores(...)
+📋 Listas de Nombres, Apellidos y DNIs
+java
+
+Copiar
+// --- NOMBRES ---
+List<String> nombres = new ArrayList<>(Arrays.asList(
+    "Santiago", "Valentina", "Mateo", "Lucía", "Nicolás",
+    "Camila", "Tomás", "Martina", "Agustín", "Sofía",
+    "Facundo", "Florencia", "Ignacio", "Julieta", "Ezequiel",
+    "Antonella", "Leandro", "Micaela", "Rodrigo", "Natalia"
+));
+
+// --- APELLIDOS ---
+List<String> apellidos = new ArrayList<>(Arrays.asList(
+    "González", "Rodríguez", "Fernández", "López", "Martínez",
+    "García", "Pérez", "Sánchez", "Romero", "Torres",
+    "Díaz", "Álvarez", "Ruiz", "Moreno", "Jiménez",
+    "Herrera", "Medina", "Castro", "Suárez", "Vargas"
+));
+
+// --- RANGO DNI (en generarDnis()) ---
+int min = 10_000_000;
+int max = 50_000_000;
+// Generar con: int dni = random.nextInt(max - min + 1) + min;
+
+💡 Tips clave a recordar:
+
+Usar HashSet siempre que necesites unicidad (DNIs, votos)
+El Comparator en el recuento es fundamental para obtener el ranking correcto
+Separar bien cada responsabilidad en su método correspondiente facilita el debugging
