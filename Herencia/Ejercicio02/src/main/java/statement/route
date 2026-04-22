@@ -1,0 +1,20 @@
+
+src/
+├── model/
+│   ├── Electrodomestico.java
+│   ├── Lavadora.java
+│   └── Televisor.java
+├── interfaces/
+│   └── IElectrodomestico.java
+├── service/
+│   └── ElectrodomesticoService.java
+└── Main.java
+
+Hasta aqui yo estaba usando las interfaces como un "intermediario" entre las clases (paquete MODEL) y el servicio (paquete SERVICE)
+pero en este ejercicio voy a usarlo de una manera diferente y en este caso nueva para mi pero que me aclara mejor el concepto
+de lo que es una interfaz; lo voy a usar para obligar a las clases a implementar dos metodos el que me permite crearElectrodomestico
+y PrecioFinal
+Interfaz = contrato de comportamiento
+
+
+
