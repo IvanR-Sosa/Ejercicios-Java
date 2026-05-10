@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Appliance implements IAppliance{
     
-    private Double price;
+    Double price;
     private String color;
     private Character energyConsumption;
     private Double weight; 
@@ -13,8 +13,8 @@ public class Appliance implements IAppliance{
     public Appliance() {
     }
 
-    public Appliance(Double price, String color, Character energyConsumption, Double weight) {
-        this.price = price;
+    public Appliance( String color, Character energyConsumption, Double weight) {
+        this.price = 1000.00;
         this.color = checkColor(color);
         this.energyConsumption = checkEnergyConsumption(energyConsumption);
         this.weight = weight;

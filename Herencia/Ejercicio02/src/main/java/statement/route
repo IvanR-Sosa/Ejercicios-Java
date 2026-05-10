@@ -16,5 +16,70 @@ de lo que es una interfaz; lo voy a usar para obligar a las clases a implementar
 y PrecioFinal
 Interfaz = contrato de comportamiento
 
+Interfaz  IAppliance.java
+    void createAppliance();
+    Double finalPrice();
+
+
+Clase Appliance.java ---> implements IAppliance
+            -Double price;
+            - String color;
+            - Character energyConsumption;
+            -Double weight;
+
+                Contructores vacio y con todos los parametros
+                getters y setters
+
+        @Override
+          + void createAppliance()
+
+        @Override
+           + Double finalPrice()  // metodo definido en  la interfaz
+
+
+        -Character checkEnergyConsumption(Character character)   //Metodo privado pues desde otra clase no es necesario acceder a el ya que actua de manera automatica al generar el objeto
+        -String checkColor (String color) //Metodo privado pues desde otra clase no es necesario acceder a el ya que actua de manera automatica al generar el objeto
+        
+        @Override
+        toString  // dar una forma de presentar los atributo del objeto
+
+Clase WashingMachine.java  --> extends Appliance
+
+            -Double loadLaundry
+            
+            constructores vacio y con todos los parametros (incluidos los del padre) (uso de "super" para la llamada de parametros del padre)
+            getter y setter de atibutos propios
+        
+        + void createWasingMaching ()
+            super.createAppliance()  //Metodo del padre 
+
+        @Override
+        + Double finalPrice()
+            super.finalPrice()  //Metodo del padre
+
+
+Clase WashingMachine.java  --> extends Appliance
+
+            -Integer resolution
+            -Boolean tdt
+            
+            constructores vacio y con todos los parametros (incluidos los del padre) (uso de "super" para la llamada de parametros del padre)
+            getter y setter de atibutos propios
+        
+        + void createWasingMaching ()
+            super.createAppliance()  //Metodo del padre 
+
+        @Override
+        + Double finalPrice()
+            super.finalPrice()  //Metodo del padre
+
+
+Service
+Clase ServiceAppliance.java  //  en este caso solo la usaremos para mostrar los datos de cada hijo de electrodomestico
+
+    + void showAppliance ( Appliance appliance)
+    + double ListpriceAppliances (ArrayList<Appliance> appliances)
+
+        
 
 

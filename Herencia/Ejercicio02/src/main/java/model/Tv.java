@@ -11,11 +11,13 @@ public class Tv extends Appliance {
         super();
     }
 
-    public Tv(Integer inches, Boolean tdt, Double price, String color, Character energyConsumption, Double weight) {
-        super(price, color, energyConsumption, weight);
-        this.resolution = inches;
+    public Tv(Integer resolution, Boolean tdt, String color, Character energyConsumption, Double weight) {
+        super(color, energyConsumption, weight);
+        this.resolution = resolution;
         this.tdt = tdt;
     }
+
+    
 
     public Integer getResolution() {
         return resolution;
@@ -58,8 +60,12 @@ public class Tv extends Appliance {
 
     @Override
     public String toString() {
-        return super.toString() + "\nResolucion : " +this.resolution + " '' " +
-                "\n¿Tiene TDT? : " +this.tdt;
+        return "TELEVISOR\n"+
+                  super.toString() + 
+                  "\nResolucion  : " + this.resolution + " '' " +
+                  "¿Tiene TDT? : " + this.tdt +
+                 String.format("\nPrecio Final : $%.2f", finalPrice()) +
+                "\n______________________________________________________________________________________________________";
     }
     
     

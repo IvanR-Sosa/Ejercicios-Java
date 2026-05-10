@@ -10,10 +10,12 @@ public class WashingMachine extends Appliance{
         super();
     }
 
-    public WashingMachine(Double loadLaundry, Double price, String color, Character energyConsumption, Double weight) {
-        super(price, color, energyConsumption, weight);
+    public WashingMachine(Double loadLaundry, String color, Character energyConsumption, Double weight) {
+        super(color, energyConsumption, weight);
         this.loadLaundry = loadLaundry;
     }
+
+   
 
    
 
@@ -25,12 +27,6 @@ public class WashingMachine extends Appliance{
         this.loadLaundry = loadLaundry;
     }
 
-      @Override
-    public Double finalPrice(){
-        Double totalPrice = super.finalPrice();
-        if (this.loadLaundry > 30 ) totalPrice += 500;
-        return  totalPrice;
-    } 
     
     public void createWashingMachine (){
         Scanner scanner = new Scanner(System.in);
@@ -40,10 +36,21 @@ public class WashingMachine extends Appliance{
         this.loadLaundry = Double.parseDouble(scanner.nextLine());
         
     }
+      
+    @Override
+    public Double finalPrice(){
+        Double totalPrice = super.finalPrice();
+        if (this.loadLaundry > 30 ) totalPrice += 500;
+        return  totalPrice;
+    } 
 
     @Override
     public String toString() {
-        return super.toString() + "\nCarga (Kg) : " + this.loadLaundry;
+        return "LAVADORA\n"+
+                  super.toString() + 
+                  "\nCarga (Kg) : " + this.loadLaundry + 
+                 String.format("\nPrecio Final : $%.2f", finalPrice()) +
+                "\n______________________________________________________________________________________________________";
     }
     
     
